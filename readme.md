@@ -1,3 +1,5 @@
 - python -m playwright install chromium
 - flask --app main run --debug
-- Card markup/CSS lives in `card_template/` (`card.html` + `card.css`). Edit those, then re-render to see changes; runtime values (width, offsets, etc.) are exposed through CSS custom properties like `--card-width-dyn`, falling back to whatever you set in the stylesheet.
+
+![Example](Readme/card.png)
+
