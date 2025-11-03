@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Player Card</title>
+  <link rel="stylesheet" href="card.css">
+</head>
+<body>
+  <!--
+    This file is used both by the Flask renderer (values are injected via string.Template)
+    and as a standalone example you can edit directly. Substitute the $${PLACEHOLDER} tokens with
+    your own values when working on the file manually, or open the generated HTML from
+    the API response to see a fully populated version.
+  -->
+  <div class="card-stage">
+    <div class="card-root">
+      <div class="card-frame">
+        <div class="card-inner">
+          <div class="card-bg"><img src="${BACKGROUND_URL}" alt="Background artwork"></div>
+          <div class="card-overlay"></div>
+          <div class="card-main"><img src="${MAIN_URL}" alt="Foreground artwork"></div>
+          <div class="card-shine"></div>
+
+          <!-- <div class="card-bg"><img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Braum_0.jpg" alt="Background artwork"></div>
+          <div class="card-overlay"></div>
+          <div class="card-main"><img src="https://lh5.googleusercontent.com/proxy/OeEHCHTTBaWvWlzHKP_psolozKcvx0-6IXwOn5Ek3gmhgiQytHVmb8KFQ3leztReKIX85bMd0-QdORN6wqbcH4rQPpnArhjqBVMMoSPBrD-RIAmFmpnzMLld" alt="Foreground artwork"></div>
+          <div class="card-shine"></div> -->
+
+          <div class="top-meta">
+            <span class="card-rating">${RATING_TEXT}</span>
+            <div class="corner-emblem">${CORNER_TEXT}</div>
+          </div>
+          <!-- <div class="top-meta">
+            <span class="card-rating">111</span>
+            <div class="corner-emblem">TEST</div>
+          </div> -->
+          ${SIDE_TAG_BLOCK}
+          <!-- 2026 VendeeSmash Tournament -->
+
+          <div class="card-content">
+            <span class="card-team">${TEAM_NAME}</span>
+            <span class="card-name">${PLAYER_NAME}</span>
+            <span class="card-champion">${CHAMPION_NAME}</span>
+            <!-- <span class="card-team">Equipe</span>
+            <span class="card-name">Joueur</span>
+            <span class="card-champion">Braum</span> -->
+
+
+            <div class="card-playstyle">
+              <span class="card-playstyle-icon">${PLAYSTYLE_ICON}</span>
+              <span class="card-playstyle-label">${PLAYSTYLE_LABEL}</span>
+            </div>
+            <!-- <div class="card-playstyle">
+              <span class="card-playstyle-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 2 3 12l9 10 9-10-9-10zm0 4.8L17.2 12 12 17.2 6.8 12 12 6.8z"/></svg>
+              </span>
+              <span class="card-playstyle-label">
+                Rushdown
+              </span>
+            </div> -->
+          </div>
+          <div class="card-badge">${BADGE_TEXT}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

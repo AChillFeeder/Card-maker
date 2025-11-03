@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Card Maker Studio</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">✧</span>
+        <div>
+          <h1>Card Maker Studio</h1>
+          <p>Create beautiful trading card compositions in seconds.</p>
+        </div>
+      </div>
+      <nav class="header-actions">
+        <button type="button" class="chip" id="prefill-mini">Mini</button>
+        <button type="button" class="chip" id="prefill-standard">Standard</button>
+        <button type="button" class="chip" id="prefill-wide">Poster</button>
+      </nav>
+    </header>
+
+    <main class="app-main">
+      <section class="panel form-panel">
+        <form id="card-form" class="designer-form" method="post" enctype="multipart/form-data">
+          <section class="form-section">
+            <header>
+              <h2>Canvas</h2>
+              <p>Set the base size and export format for your render.</p>
+            </header>
+            <div class="field-grid">
+              <label class="field">
+                <span>Width (px)</span>
+                <input name="width" type="number" min="64" value="384">
+              </label>
+              <label class="field">
+                <span>Height (px)</span>
+                <input name="height" type="number" min="64" value="576">
+              </label>
+              <label class="field">
+                <span>HiDPI (DPR)</span>
+                <input name="dpr" type="number" min="1" max="4" step="0.5" value="3">
+              </label>
+              <label class="field">
+                <span>Format</span>
+                <select name="format">
+                  <option value="png" selected>PNG</option>
+                  <option value="jpeg">JPEG</option>
+                  <option value="webp">WEBP</option>
+                  <option value="pdf">PDF</option>
+                </select>
+              </label>
+              <label class="field checkbox">
+                <input name="transparent" type="checkbox">
+                <span>Transparent Background</span>
+              </label>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <header>
+              <h2>Framing</h2>
+              <p>Dial in border styling and card corners.</p>
+            </header>
+            <div class="field-grid">
+              <label class="field">
+                <span>Border Width</span>
+                <div class="input-stack">
+                  <input name="borderWidth" class="sync-number" type="number" min="0" max="80" value="12" data-sync="border-width">
+                  <input class="sync-range" type="range" min="0" max="80" value="12" data-sync="border-width">
+                </div>
+              </label>
+              <label class="field color">
+                <span>Border Color</span>
+                <input name="borderColor" type="color" value="#d4af37">
+              </label>
+              <label class="field">
+                <span>Corner Radius</span>
+                <div class="input-stack">
+                  <input name="radius" class="sync-number" type="number" min="0" max="200" value="28" data-sync="radius">
+                  <input class="sync-range" type="range" min="0" max="200" value="28" data-sync="radius">
+                </div>
+              </label>
+              <label class="field">
+                <span>Background Blur</span>
+                <div class="input-stack">
+                  <input name="bgBlur" class="sync-number" type="number" min="0" max="25" value="4" data-sync="bg-blur">
+                  <input class="sync-range" type="range" min="0" max="25" value="4" data-sync="bg-blur">
+                </div>
+              </label>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <header>
+              <h2>Main Artwork</h2>
+              <p>Control scale and offsets of your subject image.</p>
+            </header>
+            <div class="field-grid">
+              <label class="field">
+                <span>Scale (%)</span>
+                <div class="input-stack">
+                  <input name="mainScale" class="sync-number" type="number" min="10" max="300" value="92" data-sync="main-scale">
+                  <input class="sync-range" type="range" min="10" max="300" value="92" data-sync="main-scale">
+                </div>
+              </label>
+              <label class="field">
+                <span>Offset X (px)</span>
+                <div class="input-stack">
+                  <input name="mainOffsetX" class="sync-number" type="number" min="-400" max="400" value="0" data-sync="offset-x">
+                  <input class="sync-range" type="range" min="-400" max="400" value="0" data-sync="offset-x">
+                </div>
+              </label>
+              <label class="field">
+                <span>Offset Y (px)</span>
+                <div class="input-stack">
+                  <input name="mainOffsetY" class="sync-number" type="number" min="-400" max="400" value="0" data-sync="offset-y">
+                  <input class="sync-range" type="range" min="-400" max="400" value="0" data-sync="offset-y">
+                </div>
+              </label>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <header>
+              <h2>Identity &amp; Copy</h2>
+              <p>Set the competitive details displayed on the card.</p>
+            </header>
+            <div class="field-grid">
+              <label class="field">
+                <span>Player Name</span>
+                <input name="playerName" type="text" value="Faker" maxlength="40">
+              </label>
+              <label class="field">
+                <span>Team</span>
+                <input name="teamName" type="text" value="T1" maxlength="32">
+              </label>
+              <label class="field">
+                <span>Favourite Champion</span>
+                <input name="favoriteChampion" type="text" value="Neeko" maxlength="32">
+              </label>
+              <label class="field">
+                <span>Rating / Number</span>
+                <input name="cardRank" type="text" value="114" maxlength="8">
+              </label>
+              <label class="field">
+                <span>Season Tag</span>
+                <input name="sideTag" type="text" value="2023 LCK SUMMER 24" maxlength="48">
+              </label>
+              <label class="field">
+                <span>Badge Text</span>
+                <input name="badgeText" type="text" value="23 SUM" maxlength="16">
+              </label>
+              <label class="field">
+                <span>Playstyle Label</span>
+                <input name="playstyle" type="text" value="Mid" maxlength="16">
+              </label>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <header>
+              <h2>Playstyle Glyph</h2>
+              <p>Choose an icon to sit beside the playstyle label.</p>
+            </header>
+            <div class="icon-grid" role="radiogroup" aria-label="Playstyle icon options">
+              <label class="icon-option">
+                <input type="radio" name="playstyleIcon" value="rushdown" checked>
+                <span class="icon-preview">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 3 12l9 10 9-10-9-10zm0 4.8L17.2 12 12 17.2 6.8 12 12 6.8z"/></svg>
+                </span>
+                <span class="icon-copy">
+                  <span class="icon-title">Rushdown</span>
+                  <span class="icon-note">Jeu rapide et intense</span>
+                </span>
+              </label>
+              <label class="icon-option">
+                <input type="radio" name="playstyleIcon" value="grappler">
+                <span class="icon-preview">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 18h16l-8-12-8 12zm3.2-2 4.8-7.2 4.8 7.2H7.2z"/></svg>
+                </span>
+                <span class="icon-copy">
+                  <span class="icon-title">Grappler</span>
+                  <span class="icon-note"></span>
+                </span>
+              </label>
+              <label class="icon-option">
+                <input type="radio" name="playstyleIcon" value="zoning">
+                <span class="icon-preview">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3c-2.5 2.9-6.2 4.4-6.2 8.4 0 3.2 2.6 5.8 6.2 5.8s6.2-2.6 6.2-5.8C18.2 6.7 14.5 5.2 12 3zm.2 5.2c1.1 1.2 2 2.5 2 3.7 0 1.5-1.1 2.6-2.2 2.6s-2.2-1.1-2.2-2.6c0-1.2.9-2.5 2.4-3.7zM8 19c2.2 1.5 5.8 1.5 8 0-.7 1.8-2.4 3-4 3s-3.3-1.2-4-3z"/></svg>
+                </span>
+                <span class="icon-copy">
+                  <span class="icon-title">Zoning</span>
+                  <span class="icon-note">Combat à distance</span>
+                </span>
+              </label>
+              <label class="icon-option">
+                <input type="radio" name="playstyleIcon" value="mixups">
+                <span class="icon-preview">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 4a8 8 0 1 0 8 8h-2a6 6 0 1 1-6-6V4zm0 4a4 4 0 1 0 4 4h-2a2 2 0 1 1-2-2V8zm9-6-5 5 1.4 1.4L22.4 3 21 2z"/></svg>
+                </span>
+                <span class="icon-copy">
+                  <span class="icon-title">Mixups</span>
+                  <span class="icon-note">Confuse ton adversaire</span>
+                </span>
+              </label>
+              <label class="icon-option">
+                <input type="radio" name="playstyleIcon" value="mix">
+                <span class="icon-preview">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m12 3 2.1 4.8 5.2.4-4 3.4 1.2 5.1L12 14.9 7.5 16.7l1.2-5.1-4-3.4 5.2-.4L12 3z"/></svg>
+                </span>
+                <span class="icon-copy">
+                  <span class="icon-title">Mix</span>
+                  <span class="icon-note">Pas de style spécifique</span>
+                </span>
+              </label>
+            </div>
+          </section>
+
+          <section class="form-section uploads">
+            <header>
+              <h2>Artwork Upload</h2>
+              <p>Drop in your background and foreground art files.</p>
+            </header>
+            <div class="upload-field">
+              <label class="upload-card" for="bg-file">
+                <input id="bg-file" name="bgFile" type="file" accept="image/*" required>
+                <span class="upload-title">Background</span>
+                <span class="upload-subtitle">Drag &amp; drop or browse</span>
+                <span class="upload-meta" data-placeholder="No file selected">No file selected</span>
+              </label>
+              <label class="upload-card" for="main-file">
+                <input id="main-file" name="mainFile" type="file" accept="image/*" required>
+                <span class="upload-title">Main Artwork</span>
+                <span class="upload-subtitle">Drag &amp; drop or browse</span>
+                <span class="upload-meta" data-placeholder="No file selected">No file selected</span>
+              </label>
+            </div>
+          </section>
+
+          <footer class="form-actions">
+            <div class="action-buttons">
+              <button type="button" id="btn-preview" class="btn primary">Preview Render</button>
+              <button type="submit" class="btn ghost">Download Render</button>
+            </div>
+            <p class="form-hint">Preview to inspect the render. Download will trigger the last preview result.</p>
+          </footer>
+        </form>
+      </section>
+
+      <section class="panel preview-panel">
+        <div class="preview-shell">
+          <header>
+            <h2>Live Preview</h2>
+            <p id="status-message">Waiting for files…</p>
+          </header>
+          <div class="preview-stage">
+            <div class="preview-canvas" id="preview-canvas">
+              <div class="preview-placeholder">
+                <span class="sparkle" aria-hidden="true">✨</span>
+                <p>Your card preview appears here after rendering.</p>
+              </div>
+              <img id="result" alt="Rendered card preview">
+              <div class="loader" id="loader" hidden>
+                <span class="loader-ring"></span>
+                <span>Rendering…</span>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="preview-actions">
+            <a id="download-link" class="btn secondary" href="#" download="card.png" aria-disabled="true">Download Last Render</a>
+          </div> -->
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>Crafted for fast iterations. Drop in art, tune sliders, and export polished cards instantly.</p>
+    </footer>
+  </div>
+
+  <script src="/static/js/app.js" type="module"></script>
+</body>
+</html>
