@@ -14,7 +14,7 @@ from playwright.sync_api import (
 MAX_CONCURRENCY = int(__import__("os").environ.get("MAX_CONCURRENCY", "4"))
 DEFAULT_W, DEFAULT_H, DEFAULT_DPR = 384, 576, 3
 DEFAULT_MAIN_SCALE = 92
-DEFAULT_BG_SCALE = 106
+DEFAULT_BG_SCALE = 100
 DEFAULT_TIMEOUT = 15_000
 # ----------------------------
 
@@ -28,11 +28,11 @@ CARD_HTML_PATH = CARD_TEMPLATE_DIR / "card.html"
 CARD_CSS_PATH = CARD_TEMPLATE_DIR / "card.css"
 
 PLAYSTYLE_ICONS = {
-    "rushdown": '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M4 12a1 1 0 0 1 .3-.7l6.5-6.5 1.4 1.4L7.4 11H21v2H7.4l4.8 4.8-1.4 1.4-6.5-6.5A1 1 0 0 1 4 12z"/></svg>',
-    "zoning": '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9 9 9 0 0 0-9-9Zm0 2a7 7 0 1 1-7 7 7 7 0 0 1 7-7Zm0 3a4 4 0 1 0 4 4 4 4 0 0 0-4-4Zm0 2.5a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 12 10.5Z"/></svg>',
-    "mixups": '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M7 4a4 4 0 0 0 0 8h2.1a1.9 1.9 0 0 1 1.7 2.7l-.6 1.5A3.5 3.5 0 0 0 13.5 22H18v-2h-4.5a1.5 1.5 0 0 1-1.4-2l.6-1.5A3.9 3.9 0 0 0 9.1 10H7a2 2 0 0 1 0-4h10V4Z"/></svg>',
-    "grappler": '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M7.5 4a3.5 3.5 0 0 0-3.4 4.3l1 4.1a4.5 4.5 0 0 0 4.4 3.4H11l3.6 3.6 1.4-1.4L13.8 16H15a4.5 4.5 0 0 0 4.4-3.4l1-4.1A3.5 3.5 0 0 0 17 4a3.4 3.4 0 0 0-3.3 2.7l-.4 1.3h-2.6l-.4-1.3A3.4 3.4 0 0 0 7.5 4Zm0 2a1.5 1.5 0 0 1 1.4 1.2l.7 2.8h4.8l.7-2.8A1.5 1.5 0 1 1 17 6a1.5 1.5 0 0 1 1.4 1.8l-1 4.1a2.5 2.5 0 0 1-2.4 1.8H9.6a2.5 2.5 0 0 1-2.4-1.8l-1-4.1A1.5 1.5 0 0 1 7.5 6Z"/></svg>',
-    "allrounder": '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M11 4h2v3h3a4 4 0 0 1 0 8h-1.1A4 4 0 0 1 11 19v1h2v2h-2a4 4 0 0 1-4-4 4 4 0 0 1-3-3.9V11h2v3.1A2 2 0 0 0 8 16h1a4 4 0 0 1 2-7Z"/></svg>',
+    "rushdown": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sword-icon lucide-sword"><path d="m11 19-6-6"/><path d="m5 21-2-2"/><path d="m8 16-4 4"/><path d="M9.5 17.5 21 6V3h-3L6.5 14.5"/></svg>',
+    "zoning": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9 9 9 0 0 0-9-9Zm0 2a7 7 0 1 1-7 7 7 7 0 0 1 7-7Zm0 3a4 4 0 1 0 4 4 4 4 0 0 0-4-4Zm0 2.5a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 12 10.5Z"/></svg>',
+    "mixups": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right-left-icon lucide-arrow-right-left"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg>',
+    "grappler": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-biceps-flexed-icon lucide-biceps-flexed"><path d="M12.409 13.017A5 5 0 0 1 22 15c0 3.866-4 7-9 7-4.077 0-8.153-.82-10.371-2.462-.426-.316-.631-.832-.62-1.362C2.118 12.723 2.627 2 10 2a3 3 0 0 1 3 3 2 2 0 0 1-2 2c-1.105 0-1.64-.444-2-1"/><path d="M15 14a5 5 0 0 0-7.584 2"/><path d="M9.964 6.825C8.019 7.977 9.5 13 8 15"/></svg>',
+    "allrounder": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star-icon lucide-star"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>',
 }
 DEFAULT_ICON_KEY = "rushdown"
 
@@ -168,7 +168,7 @@ def render_card():
     main_url = _as_data_url(main_file)
 
     frame_pad = max(5, min(96, int(border_width * 1.6)))
-    card_radius = max(radius, 36)
+    card_radius = max(0, radius)
     accent_soft = _hex_to_rgba(border_color, 0.32)
     main_scale_value = max(10, min(300, main_scale)) / 100
     bg_scale_value = max(10, min(400, bg_scale)) / 100
@@ -178,7 +178,7 @@ def render_card():
     player_name = _clean_text(form.get("playerName"), "Invité", 40)
     team_name = _clean_text(form.get("teamName"), "Équipe", 28, allow_empty=True)
     champion_name = _clean_text(form.get("favoriteChampion"), "Champion", 32)
-    playstyle_label = _clean_text(form.get("playstyle"), "Aggro", 16)
+    playstyle_label = _clean_text(form.get("playstyle"), "Aggresseur", 16)
     side_tag = _clean_text(form.get("sideTag"), "Saison Arcade 2025", 48, allow_empty=True)
     badge_text = _clean_text(form.get("badgeText"), "ARC", 20, allow_empty=True)
     rating_text = _clean_text(form.get("cardRank"), "100", 8, allow_empty=True)
