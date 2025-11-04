@@ -13,6 +13,8 @@ from playwright.sync_api import (
 # ---------- Config ----------
 MAX_CONCURRENCY = int(__import__("os").environ.get("MAX_CONCURRENCY", "4"))
 DEFAULT_W, DEFAULT_H, DEFAULT_DPR = 384, 576, 3
+DEFAULT_MAIN_SCALE = 92
+DEFAULT_BG_SCALE = 106
 DEFAULT_TIMEOUT = 15_000
 # ----------------------------
 
@@ -26,11 +28,11 @@ CARD_HTML_PATH = CARD_TEMPLATE_DIR / "card.html"
 CARD_CSS_PATH = CARD_TEMPLATE_DIR / "card.css"
 
 PLAYSTYLE_ICONS = {
-    "rushdown": '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 2 3 12l9 10 9-10-9-10zm0 4.8L17.2 12 12 17.2 6.8 12 12 6.8z"/></svg>',
-    "zoning": '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M4 18h16l-8-12-8 12zm3.2-2 4.8-7.2 4.8 7.2H7.2z"/></svg>',
-    "mixups": '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 3c-2.5 2.9-6.2 4.4-6.2 8.4 0 3.2 2.6 5.8 6.2 5.8s6.2-2.6 6.2-5.8C18.2 6.7 14.5 5.2 12 3zm.2 5.2c1.1 1.2 2 2.5 2 3.7 0 1.5-1.1 2.6-2.2 2.6s-2.2-1.1-2.2-2.6c0-1.2.9-2.5 2.4-3.7zM8 19c2.2 1.5 5.8 1.5 8 0-.7 1.8-2.4 3-4 3s-3.3-1.2-4-3z"/></svg>',
-    "grappler": '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 4a8 8 0 1 0 8 8h-2a6 6 0 1 1-6-6V4zm0 4a4 4 0 1 0 4 4h-2a2 2 0 1 1-2-2V8zm9-6-5 5 1.4 1.4L22.4 3 21 2z"/></svg>',
-    "mix": '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 6.3C10.3 3.8 6.7 3.4 4.7 5.6c-1.8 2-1.4 5.2.9 7.5L12 20l6.4-6.9c2.3-2.3 2.7-5.5.9-7.5-2-2.2-5.6-1.8-7.3.7z"/></svg>',
+    "rushdown": '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M4 12a1 1 0 0 1 .3-.7l6.5-6.5 1.4 1.4L7.4 11H21v2H7.4l4.8 4.8-1.4 1.4-6.5-6.5A1 1 0 0 1 4 12z"/></svg>',
+    "zoning": '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9 9 9 0 0 0-9-9Zm0 2a7 7 0 1 1-7 7 7 7 0 0 1 7-7Zm0 3a4 4 0 1 0 4 4 4 4 0 0 0-4-4Zm0 2.5a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 12 10.5Z"/></svg>',
+    "mixups": '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M7 4a4 4 0 0 0 0 8h2.1a1.9 1.9 0 0 1 1.7 2.7l-.6 1.5A3.5 3.5 0 0 0 13.5 22H18v-2h-4.5a1.5 1.5 0 0 1-1.4-2l.6-1.5A3.9 3.9 0 0 0 9.1 10H7a2 2 0 0 1 0-4h10V4Z"/></svg>',
+    "grappler": '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M7.5 4a3.5 3.5 0 0 0-3.4 4.3l1 4.1a4.5 4.5 0 0 0 4.4 3.4H11l3.6 3.6 1.4-1.4L13.8 16H15a4.5 4.5 0 0 0 4.4-3.4l1-4.1A3.5 3.5 0 0 0 17 4a3.4 3.4 0 0 0-3.3 2.7l-.4 1.3h-2.6l-.4-1.3A3.4 3.4 0 0 0 7.5 4Zm0 2a1.5 1.5 0 0 1 1.4 1.2l.7 2.8h4.8l.7-2.8A1.5 1.5 0 1 1 17 6a1.5 1.5 0 0 1 1.4 1.8l-1 4.1a2.5 2.5 0 0 1-2.4 1.8H9.6a2.5 2.5 0 0 1-2.4-1.8l-1-4.1A1.5 1.5 0 0 1 7.5 6Z"/></svg>',
+    "allrounder": '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M11 4h2v3h3a4 4 0 0 1 0 8h-1.1A4 4 0 0 1 11 19v1h2v2h-2a4 4 0 0 1-4-4 4 4 0 0 1-3-3.9V11h2v3.1A2 2 0 0 0 8 16h1a4 4 0 0 1 2-7Z"/></svg>',
 }
 DEFAULT_ICON_KEY = "rushdown"
 
@@ -149,32 +151,38 @@ def render_card():
     border_width = int(form.get("borderWidth", 12))
     radius = int(form.get("radius", 28))
     bg_blur = int(form.get("bgBlur", 4))
-    main_scale = int(form.get("mainScale", 92))
+    main_scale = int(form.get("mainScale", DEFAULT_MAIN_SCALE))
     main_offset_x = int(form.get("mainOffsetX", 0))
     main_offset_y = int(form.get("mainOffsetY", 0))
+    bg_scale = int(form.get("bgScale", DEFAULT_BG_SCALE))
+    bg_offset_x = int(form.get("bgOffsetX", 0))
+    bg_offset_y = int(form.get("bgOffsetY", 0))
 
     bg_file = files.get("bgFile")
     main_file = files.get("mainFile")
 
     if not bg_file or not main_file:
-        return jsonify({"error": "Both background and main images are required."}), 400
+        return jsonify({"error": "Les images d'arrière-plan et du personnage sont toutes les deux requises."}), 400
 
     bg_url = _as_data_url(bg_file)
     main_url = _as_data_url(main_file)
 
-    frame_pad = border_width
-    card_radius = radius
-    accent_soft = _hex_to_rgba(border_color, 0.9)
+    frame_pad = max(5, min(96, int(border_width * 1.6)))
+    card_radius = max(radius, 36)
+    accent_soft = _hex_to_rgba(border_color, 0.32)
     main_scale_value = max(10, min(300, main_scale)) / 100
+    bg_scale_value = max(10, min(400, bg_scale)) / 100
+    bg_offset_x = max(-500, min(500, bg_offset_x))
+    bg_offset_y = max(-500, min(500, bg_offset_y))
 
-    player_name = _clean_text(form.get("playerName"), "Faker", 40)
-    team_name = _clean_text(form.get("teamName"), "T1", 28, allow_empty=True)
-    champion_name = _clean_text(form.get("favoriteChampion"), "Neeko", 32)
-    playstyle_label = _clean_text(form.get("playstyle"), "Mid", 16)
-    side_tag = _clean_text(form.get("sideTag"), "2023 LCK SUMMER 24", 48, allow_empty=True)
-    badge_text = _clean_text(form.get("badgeText"), "23 SUM", 20, allow_empty=True)
-    rating_text = _clean_text(form.get("cardRank"), "114", 8, allow_empty=True)
-    corner_label = _clean_text(form.get("cornerLabel"), "", 6, allow_empty=True)
+    player_name = _clean_text(form.get("playerName"), "Invité", 40)
+    team_name = _clean_text(form.get("teamName"), "Équipe", 28, allow_empty=True)
+    champion_name = _clean_text(form.get("favoriteChampion"), "Champion", 32)
+    playstyle_label = _clean_text(form.get("playstyle"), "Aggro", 16)
+    side_tag = _clean_text(form.get("sideTag"), "Saison Arcade 2025", 48, allow_empty=True)
+    badge_text = _clean_text(form.get("badgeText"), "ARC", 20, allow_empty=True)
+    rating_text = _clean_text(form.get("cardRank"), "100", 8, allow_empty=True)
+    corner_label = _clean_text(form.get("cornerLabel"), "FGC", 6, allow_empty=True)
 
     icon_key = (form.get("playstyleIcon") or DEFAULT_ICON_KEY).lower()
     icon_svg = PLAYSTYLE_ICONS.get(icon_key, PLAYSTYLE_ICONS[DEFAULT_ICON_KEY])
@@ -212,6 +220,9 @@ def render_card():
         --accent-color-dyn:{border_color};
         --accent-soft-dyn:{accent_soft};
         --bg-blur-dyn:{bg_blur}px;
+        --bg-scale-dyn:{bg_scale_value};
+        --bg-offset-x-dyn:{bg_offset_x}px;
+        --bg-offset-y-dyn:{bg_offset_y}px;
         --main-scale-dyn:{main_scale_value};
         --offset-x-dyn:{main_offset_x}px;
         --offset-y-dyn:{main_offset_y}px;

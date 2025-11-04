@@ -1,47 +1,56 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Card Maker Studio</title>
+  <title>Card creator</title>
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
   <div class="app-shell">
     <header class="app-header">
       <div class="brand">
-        <span class="logo" aria-hidden="true">✧</span>
+        <!-- <span class="logo" aria-hidden="true">★</span> -->
         <div>
-          <h1>Card Maker Studio</h1>
-          <p>Create beautiful trading card compositions in seconds.</p>
+          <h1>Card creator</h1>
+          <p>Créer des cartes pour les participants de tournois Smash ou 2xko</p>
         </div>
       </div>
       <nav class="header-actions">
         <button type="button" class="chip" id="prefill-mini">Mini</button>
-        <button type="button" class="chip" id="prefill-standard">Standard</button>
-        <button type="button" class="chip" id="prefill-wide">Poster</button>
+        <button type="button" class="chip" id="prefill-standard">Classique</button>
+        <button type="button" class="chip" id="prefill-wide">Affiche</button>
       </nav>
     </header>
 
     <main class="app-main">
       <section class="panel form-panel">
         <form id="card-form" class="designer-form" method="post" enctype="multipart/form-data">
-          <section class="form-section">
+          <nav class="form-tabs" role="tablist" aria-label="Sections de configuration">
+            <button type="button" class="tab is-active" id="tab-canvas" role="tab" aria-selected="true" aria-controls="panel-canvas" data-tab="canvas">Toile</button>
+            <button type="button" class="tab" id="tab-framing" role="tab" aria-selected="false" aria-controls="panel-framing" data-tab="framing">Cadre</button>
+            <button type="button" class="tab" id="tab-visuals" role="tab" aria-selected="false" aria-controls="panel-visuals" data-tab="visuals">Visuels</button>
+            <button type="button" class="tab" id="tab-identity" role="tab" aria-selected="false" aria-controls="panel-identity" data-tab="identity">Identité</button>
+            <button type="button" class="tab" id="tab-playstyle" role="tab" aria-selected="false" aria-controls="panel-playstyle" data-tab="playstyle">Style de jeu</button>
+            <button type="button" class="tab" id="tab-uploads" role="tab" aria-selected="false" aria-controls="panel-uploads" data-tab="uploads">Import</button>
+          </nav>
+
+          <section class="form-section tab-panel is-active" id="panel-canvas" role="tabpanel" tabindex="0" aria-labelledby="tab-canvas" data-tab="canvas">
             <header>
-              <h2>Canvas</h2>
-              <p>Set the base size and export format for your render.</p>
+              <h2>Toile</h2>
+              <p>Définissez la taille de base et le format d'export du rendu.</p>
             </header>
             <div class="field-grid">
               <label class="field">
-                <span>Width (px)</span>
+                <span>Largeur (px)</span>
                 <input name="width" type="number" min="64" value="384">
               </label>
               <label class="field">
-                <span>Height (px)</span>
+                <span>Hauteur (px)</span>
                 <input name="height" type="number" min="64" value="576">
               </label>
               <label class="field">
-                <span>HiDPI (DPR)</span>
+                <span>Densité (DPR)</span>
                 <input name="dpr" type="number" min="1" max="4" step="0.5" value="3">
               </label>
               <label class="field">
@@ -55,198 +64,232 @@
               </label>
               <label class="field checkbox">
                 <input name="transparent" type="checkbox">
-                <span>Transparent Background</span>
+                <span>Fond transparent</span>
               </label>
             </div>
           </section>
 
-          <section class="form-section">
+          <section class="form-section tab-panel" id="panel-framing" role="tabpanel" tabindex="0" aria-labelledby="tab-framing" data-tab="framing" hidden>
             <header>
-              <h2>Framing</h2>
-              <p>Dial in border styling and card corners.</p>
+              <h2>Cadre</h2>
+              <p>Ajustez la bordure, les coins et les effets d'arrière-plan.</p>
             </header>
             <div class="field-grid">
               <label class="field">
-                <span>Border Width</span>
+                <span>Largeur de bordure</span>
                 <div class="input-stack">
                   <input name="borderWidth" class="sync-number" type="number" min="0" max="80" value="12" data-sync="border-width">
                   <input class="sync-range" type="range" min="0" max="80" value="12" data-sync="border-width">
                 </div>
               </label>
-              <label class="field color">
-                <span>Border Color</span>
-                <input name="borderColor" type="color" value="#d4af37">
-              </label>
               <label class="field">
-                <span>Corner Radius</span>
+                <span>Rayon des coins</span>
                 <div class="input-stack">
                   <input name="radius" class="sync-number" type="number" min="0" max="200" value="28" data-sync="radius">
                   <input class="sync-range" type="range" min="0" max="200" value="28" data-sync="radius">
                 </div>
               </label>
               <label class="field">
-                <span>Background Blur</span>
+                <span>Flou d'arrière-plan</span>
                 <div class="input-stack">
                   <input name="bgBlur" class="sync-number" type="number" min="0" max="25" value="4" data-sync="bg-blur">
                   <input class="sync-range" type="range" min="0" max="25" value="4" data-sync="bg-blur">
                 </div>
               </label>
+              <label class="field color">
+                <span>Couleur de bordure</span>
+                <input name="borderColor" type="color" value="#d4af37">
+              </label>
             </div>
           </section>
 
-          <section class="form-section">
+          <section class="form-section tab-panel" id="panel-visuals" role="tabpanel" tabindex="0" aria-labelledby="tab-visuals" data-tab="visuals" hidden>
             <header>
-              <h2>Main Artwork</h2>
-              <p>Control scale and offsets of your subject image.</p>
+              <h2>Visuels</h2>
+              <p>Réglez les positions et échelles de l'arrière-plan et du personnage.</p>
+            </header>
+            <div class="field-stack">
+              <h3>Arrière-plan</h3>
+              <div class="field-grid">
+                <label class="field">
+                  <span>Échelle (%)</span>
+                  <div class="input-stack">
+                    <input name="bgScale" class="sync-number" type="number" min="10" max="400" value="106" data-sync="bg-scale">
+                    <input class="sync-range" type="range" min="10" max="400" value="106" data-sync="bg-scale">
+                  </div>
+                </label>
+                <label class="field">
+                  <span>Décalage X (px)</span>
+                  <div class="input-stack">
+                    <input name="bgOffsetX" class="sync-number" type="number" min="-400" max="400" value="0" data-sync="bg-offset-x">
+                    <input class="sync-range" type="range" min="-400" max="400" value="0" data-sync="bg-offset-x">
+                  </div>
+                </label>
+                <label class="field">
+                  <span>Décalage Y (px)</span>
+                  <div class="input-stack">
+                    <input name="bgOffsetY" class="sync-number" type="number" min="-400" max="400" value="0" data-sync="bg-offset-y">
+                    <input class="sync-range" type="range" min="-400" max="400" value="0" data-sync="bg-offset-y">
+                  </div>
+                </label>
+              </div>
+            </div>
+            <div class="field-stack">
+              <h3>Portrait</h3>
+              <div class="field-grid">
+                <label class="field">
+                  <span>Échelle (%)</span>
+                  <div class="input-stack">
+                    <input name="mainScale" class="sync-number" type="number" min="10" max="300" value="92" data-sync="main-scale">
+                    <input class="sync-range" type="range" min="10" max="300" value="92" data-sync="main-scale">
+                  </div>
+                </label>
+                <label class="field">
+                  <span>Décalage X (px)</span>
+                  <div class="input-stack">
+                    <input name="mainOffsetX" class="sync-number" type="number" min="-400" max="400" value="0" data-sync="offset-x">
+                    <input class="sync-range" type="range" min="-400" max="400" value="0" data-sync="offset-x">
+                  </div>
+                </label>
+                <label class="field">
+                  <span>Décalage Y (px)</span>
+                  <div class="input-stack">
+                    <input name="mainOffsetY" class="sync-number" type="number" min="-400" max="400" value="0" data-sync="offset-y">
+                    <input class="sync-range" type="range" min="-400" max="400" value="0" data-sync="offset-y">
+                  </div>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section tab-panel" id="panel-identity" role="tabpanel" tabindex="0" aria-labelledby="tab-identity" data-tab="identity" hidden>
+            <header>
+              <h2>Identité &amp; Texte</h2>
+              <p>Renseignez les informations qui apparaîtront sur la carte.</p>
             </header>
             <div class="field-grid">
               <label class="field">
-                <span>Scale (%)</span>
-                <div class="input-stack">
-                  <input name="mainScale" class="sync-number" type="number" min="10" max="300" value="92" data-sync="main-scale">
-                  <input class="sync-range" type="range" min="10" max="300" value="92" data-sync="main-scale">
-                </div>
+                <span>Nom du joueur</span>
+                <input name="playerName" type="text" value="Invité" maxlength="40">
               </label>
               <label class="field">
-                <span>Offset X (px)</span>
-                <div class="input-stack">
-                  <input name="mainOffsetX" class="sync-number" type="number" min="-400" max="400" value="0" data-sync="offset-x">
-                  <input class="sync-range" type="range" min="-400" max="400" value="0" data-sync="offset-x">
-                </div>
+                <span>Équipe</span>
+                <input name="teamName" type="text" value="Équipe" maxlength="32">
               </label>
               <label class="field">
-                <span>Offset Y (px)</span>
-                <div class="input-stack">
-                  <input name="mainOffsetY" class="sync-number" type="number" min="-400" max="400" value="0" data-sync="offset-y">
-                  <input class="sync-range" type="range" min="-400" max="400" value="0" data-sync="offset-y">
-                </div>
+                <span>Personnage favori</span>
+                <input name="favoriteChampion" type="text" value="Champion" maxlength="32">
               </label>
+              <label class="field">
+                <span>Numéro / Rating</span>
+                <input name="cardRank" type="text" value="100" maxlength="8">
+              </label>
+              <label class="field">
+                <span>Tag de saison</span>
+                <input name="sideTag" type="text" value="Saison Arcade 2025" maxlength="48">
+              </label>
+              <label class="field">
+                <span>Texte du badge</span>
+                <input name="badgeText" type="text" value="ARC" maxlength="16">
+              </label>
+              <label class="field">
+                <span>Style de jeu</span>
+                <input name="playstyle" type="text" value="Aggro" maxlength="16">
+              </label>
+              <!-- <label class="field">
+                <span>Écusson de coin</span>
+                <input name="cornerLabel" type="text" value="FGC" maxlength="6">
+              </label> -->
             </div>
           </section>
 
-          <section class="form-section">
+          <section class="form-section tab-panel" id="panel-playstyle" role="tabpanel" tabindex="0" aria-labelledby="tab-playstyle" data-tab="playstyle" hidden>
             <header>
-              <h2>Identity &amp; Copy</h2>
-              <p>Set the competitive details displayed on the card.</p>
+              <h2>Style de jeu</h2>
             </header>
-            <div class="field-grid">
-              <label class="field">
-                <span>Player Name</span>
-                <input name="playerName" type="text" value="Faker" maxlength="40">
-              </label>
-              <label class="field">
-                <span>Team</span>
-                <input name="teamName" type="text" value="T1" maxlength="32">
-              </label>
-              <label class="field">
-                <span>Favourite Champion</span>
-                <input name="favoriteChampion" type="text" value="Neeko" maxlength="32">
-              </label>
-              <label class="field">
-                <span>Rating / Number</span>
-                <input name="cardRank" type="text" value="114" maxlength="8">
-              </label>
-              <label class="field">
-                <span>Season Tag</span>
-                <input name="sideTag" type="text" value="2023 LCK SUMMER 24" maxlength="48">
-              </label>
-              <label class="field">
-                <span>Badge Text</span>
-                <input name="badgeText" type="text" value="23 SUM" maxlength="16">
-              </label>
-              <label class="field">
-                <span>Playstyle Label</span>
-                <input name="playstyle" type="text" value="Mid" maxlength="16">
-              </label>
-            </div>
-          </section>
-
-          <section class="form-section">
-            <header>
-              <h2>Playstyle Glyph</h2>
-              <p>Choose an icon to sit beside the playstyle label.</p>
-            </header>
-            <div class="icon-grid" role="radiogroup" aria-label="Playstyle icon options">
+            <div class="icon-grid" role="radiogroup" aria-label="Options de style de jeu">
               <label class="icon-option">
                 <input type="radio" name="playstyleIcon" value="rushdown" checked>
                 <span class="icon-preview">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 3 12l9 10 9-10-9-10zm0 4.8L17.2 12 12 17.2 6.8 12 12 6.8z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sword-icon lucide-sword"><path d="m11 19-6-6"/><path d="m5 21-2-2"/><path d="m8 16-4 4"/><path d="M9.5 17.5 21 6V3h-3L6.5 14.5"/></svg>
                 </span>
                 <span class="icon-copy">
-                  <span class="icon-title">Rushdown</span>
-                  <span class="icon-note">Jeu rapide et intense</span>
-                </span>
-              </label>
-              <label class="icon-option">
-                <input type="radio" name="playstyleIcon" value="grappler">
-                <span class="icon-preview">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 18h16l-8-12-8 12zm3.2-2 4.8-7.2 4.8 7.2H7.2z"/></svg>
-                </span>
-                <span class="icon-copy">
-                  <span class="icon-title">Grappler</span>
-                  <span class="icon-note"></span>
+                  <span class="icon-title">Aggresseur</span>
+                  <span class="icon-note">Pression constante, attaques au corps à corps.</span>
                 </span>
               </label>
               <label class="icon-option">
                 <input type="radio" name="playstyleIcon" value="zoning">
                 <span class="icon-preview">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3c-2.5 2.9-6.2 4.4-6.2 8.4 0 3.2 2.6 5.8 6.2 5.8s6.2-2.6 6.2-5.8C18.2 6.7 14.5 5.2 12 3zm.2 5.2c1.1 1.2 2 2.5 2 3.7 0 1.5-1.1 2.6-2.2 2.6s-2.2-1.1-2.2-2.6c0-1.2.9-2.5 2.4-3.7zM8 19c2.2 1.5 5.8 1.5 8 0-.7 1.8-2.4 3-4 3s-3.3-1.2-4-3z"/></svg>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9 9 9 0 0 0-9-9Zm0 2a7 7 0 1 1-7 7 7 7 0 0 1 7-7Zm0 3a4 4 0 1 0 4 4 4 4 0 0 0-4-4Zm0 2.5a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 12 10.5Z"/></svg>
                 </span>
                 <span class="icon-copy">
-                  <span class="icon-title">Zoning</span>
-                  <span class="icon-note">Combat à distance</span>
+                  <span class="icon-title">Zoner</span>
+                  <span class="icon-note">Contrôle la distance grâce aux projectiles.</span>
                 </span>
               </label>
               <label class="icon-option">
                 <input type="radio" name="playstyleIcon" value="mixups">
                 <span class="icon-preview">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 4a8 8 0 1 0 8 8h-2a6 6 0 1 1-6-6V4zm0 4a4 4 0 1 0 4 4h-2a2 2 0 1 1-2-2V8zm9-6-5 5 1.4 1.4L22.4 3 21 2z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right-left-icon lucide-arrow-right-left"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg>
                 </span>
                 <span class="icon-copy">
-                  <span class="icon-title">Mixups</span>
-                  <span class="icon-note">Confuse ton adversaire</span>
+                  <span class="icon-title">Mix-up</span>
+                  <span class="icon-note">Variations imprévisibles pour ouvrir la garde.</span>
                 </span>
               </label>
               <label class="icon-option">
-                <input type="radio" name="playstyleIcon" value="mix">
+                <input type="radio" name="playstyleIcon" value="grappler">
                 <span class="icon-preview">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m12 3 2.1 4.8 5.2.4-4 3.4 1.2 5.1L12 14.9 7.5 16.7l1.2-5.1-4-3.4 5.2-.4L12 3z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-biceps-flexed-icon lucide-biceps-flexed"><path d="M12.409 13.017A5 5 0 0 1 22 15c0 3.866-4 7-9 7-4.077 0-8.153-.82-10.371-2.462-.426-.316-.631-.832-.62-1.362C2.118 12.723 2.627 2 10 2a3 3 0 0 1 3 3 2 2 0 0 1-2 2c-1.105 0-1.64-.444-2-1"/><path d="M15 14a5 5 0 0 0-7.584 2"/><path d="M9.964 6.825C8.019 7.977 9.5 13 8 15"/></svg>
                 </span>
                 <span class="icon-copy">
-                  <span class="icon-title">Mix</span>
-                  <span class="icon-note">Pas de style spécifique</span>
+                  <span class="icon-title">Grappler</span>
+                  <span class="icon-note">Mise de pression et explosivité au contact.</span>
+                </span>
+              </label>
+              <label class="icon-option">
+                <input type="radio" name="playstyleIcon" value="allrounder">
+                <span class="icon-preview">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star-icon lucide-star"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+                </span>
+                <span class="icon-copy">
+                  <span class="icon-title">Polyvalent</span>
+                  <span class="icon-note">Répond à toute situation avec un kit équilibré.</span>
                 </span>
               </label>
             </div>
           </section>
 
-          <section class="form-section uploads">
+          <section class="form-section tab-panel uploads" id="panel-uploads" role="tabpanel" tabindex="0" aria-labelledby="tab-uploads" data-tab="uploads" hidden>
             <header>
-              <h2>Artwork Upload</h2>
-              <p>Drop in your background and foreground art files.</p>
+              <h2>Import d'illustrations</h2>
+              <p>Déposez ou sélectionnez vos fichiers pour l'arrière-plan et le personnage.</p>
             </header>
-            <div class="upload-field">
-              <label class="upload-card" for="bg-file">
-                <input id="bg-file" name="bgFile" type="file" accept="image/*" required>
-                <span class="upload-title">Background</span>
-                <span class="upload-subtitle">Drag &amp; drop or browse</span>
-                <span class="upload-meta" data-placeholder="No file selected">No file selected</span>
+            <div class="upload-grid">
+              <label class="upload-card">
+                <input type="file" name="bgFile" accept="image/*" required>
+                <div class="upload-body">
+                  <span class="upload-title">Arrière-plan</span>
+                  <p class="upload-meta" data-placeholder="Aucun fichier sélectionné">Aucun fichier sélectionné</p>
+                  <span class="upload-hint">Formats recommandés : PNG, JPEG, WEBP</span>
+                </div>
               </label>
-              <label class="upload-card" for="main-file">
-                <input id="main-file" name="mainFile" type="file" accept="image/*" required>
-                <span class="upload-title">Main Artwork</span>
-                <span class="upload-subtitle">Drag &amp; drop or browse</span>
-                <span class="upload-meta" data-placeholder="No file selected">No file selected</span>
+              <label class="upload-card">
+                <input type="file" name="mainFile" accept="image/*" required>
+                <div class="upload-body">
+                  <span class="upload-title">Portrait</span>
+                  <p class="upload-meta" data-placeholder="Aucun fichier sélectionné">Aucun fichier sélectionné</p>
+                </div>
               </label>
             </div>
           </section>
 
           <footer class="form-actions">
             <div class="action-buttons">
-              <button type="button" id="btn-preview" class="btn primary">Preview Render</button>
-              <button type="submit" class="btn ghost">Download Render</button>
+              <button type="button" id="btn-preview" class="btn primary">Aperçu</button>
+              <button type="submit" class="btn ghost">Télécharger</button>
             </div>
-            <p class="form-hint">Preview to inspect the render. Download will trigger the last preview result.</p>
           </footer>
         </form>
       </section>
@@ -254,32 +297,29 @@
       <section class="panel preview-panel">
         <div class="preview-shell">
           <header>
-            <h2>Live Preview</h2>
-            <p id="status-message">Waiting for files…</p>
+            <h2>Aperçu en direct</h2>
+            <p id="status-message">En attente de vos fichiers.</p>
           </header>
           <div class="preview-stage">
             <div class="preview-canvas" id="preview-canvas">
               <div class="preview-placeholder">
                 <span class="sparkle" aria-hidden="true">✨</span>
-                <p>Your card preview appears here after rendering.</p>
+                <p>L'aperçu de la carte apparaîtra après le rendu.</p>
               </div>
-              <img id="result" alt="Rendered card preview">
+              <img id="result" alt="Aperçu de la carte générée">
               <div class="loader" id="loader" hidden>
                 <span class="loader-ring"></span>
-                <span>Rendering…</span>
+                <span>Rendu en cours...</span>
               </div>
             </div>
           </div>
-          <!-- <div class="preview-actions">
-            <a id="download-link" class="btn secondary" href="#" download="card.png" aria-disabled="true">Download Last Render</a>
-          </div> -->
+          <div class="preview-actions">
+            <a id="download-link" class="btn secondary" href="#" download="carte.png" aria-disabled="true">Télécharger le dernier rendu</a>
+          </div>
         </div>
       </section>
     </main>
 
-    <footer class="app-footer">
-      <p>Crafted for fast iterations. Drop in art, tune sliders, and export polished cards instantly.</p>
-    </footer>
   </div>
 
   <script src="/static/js/app.js" type="module"></script>

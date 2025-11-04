@@ -9,6 +9,8 @@
   --accent-strong: #4cd7c8;
   --text: rgba(255, 255, 255, 0.92);
   --text-soft: rgba(255, 255, 255, 0.68);
+  --danger: #ff6b6b;
+  --danger-soft: rgba(255, 107, 107, 0.65);
   --frame-shadow: 0 24px 70px rgba(5, 12, 28, 0.65);
 }
 
@@ -102,7 +104,7 @@ body {
 
 .app-main {
   display: grid;
-  grid-template-columns: minmax(0, 520px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 700px) minmax(0, 1fr);
   gap: 24px;
   padding: 0 24px;
 }
@@ -124,6 +126,70 @@ body {
 .designer-form.is-busy {
   pointer-events: none;
   opacity: 0.75;
+}
+
+.form-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 4px 6px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.tab {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px 10px 0 0;
+  padding: 8px 16px;
+  color: rgba(255, 255, 255, 0.65);
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.tab:hover {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.tab.is-active {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18) rgba(255, 255, 255, 0.18) transparent;
+  color: var(--text);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.tab-panel {
+  display: none;
+  gap: 20px;
+}
+
+.tab-panel.is-active {
+  display: block;
+}
+
+.tab-panel[hidden] {
+  display: none;
+}
+
+.field-stack {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.field-stack:last-of-type {
+  margin-bottom: 0;
+}
+
+.field-stack > h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .form-section header h2 {
@@ -237,7 +303,7 @@ body {
   box-shadow: 0 0 0 4px rgba(124, 220, 242, 0.25);
 }
 
-.uploads .upload-field {
+.upload-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
@@ -245,7 +311,7 @@ body {
 
 .icon-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 16px;
 }
 
@@ -274,7 +340,7 @@ body {
 }
 
 .icon-option .icon-preview {
-  width: 52px;
+  width: 115px;
   height: 52px;
   border-radius: 16px;
   background: rgba(6, 12, 24, 0.8);
@@ -336,6 +402,20 @@ body {
   box-shadow: 0 12px 28px rgba(76, 215, 200, 0.28);
 }
 
+.upload-card.has-error {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.28);
+}
+
+.upload-card.has-error .upload-title,
+.upload-card.has-error .upload-meta {
+  color: var(--danger);
+}
+
+.upload-card.has-error .upload-hint {
+  color: var(--danger-soft);
+}
+
 .upload-card input {
   position: absolute;
   inset: 0;
@@ -346,6 +426,11 @@ body {
 .upload-title {
   font-weight: 600;
   font-size: 1.05rem;
+}
+
+.upload-hint {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .upload-subtitle {
@@ -515,6 +600,11 @@ body {
 .loader[hidden] {
   display: none;
 }
+
+#panel-playstyle h2{
+  margin-bottom: 12px;
+}
+
 
 @keyframes spin {
   to { transform: rotate(360deg); }

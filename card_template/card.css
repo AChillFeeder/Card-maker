@@ -2,6 +2,9 @@
   color-scheme: dark;
   font-family: "Poppins", "Inter", "Segoe UI", sans-serif;
   --frame-pad: 10px;
+  --bg-scale: 1.06;
+  --bg-offset-x: 0px;
+  --bg-offset-y: 0px;
 }
 
 *,
@@ -83,7 +86,12 @@ body {
   height: 100%;
   object-fit: cover;
   filter: blur(var(--bg-blur-dyn, var(--bg-blur, 4px))) saturate(1.15);
-  transform: scale(1.06);
+  transform: translate(
+      var(--bg-offset-x-dyn, var(--bg-offset-x, 0px)),
+      var(--bg-offset-y-dyn, var(--bg-offset-y, 0px))
+    )
+    scale(var(--bg-scale-dyn, var(--bg-scale, 1.06)));
+  transform-origin: center;
 }
 
 .card-overlay {
@@ -144,6 +152,7 @@ body {
 }
 
 .corner-emblem {
+  display: none;
   /* width: 24px;
   height: 24px;
   border-radius: 5px;

@@ -11,16 +11,68 @@ const chips = {
   wide: document.getElementById("prefill-wide"),
 };
 const iconInputs = document.querySelectorAll('input[name="playstyleIcon"]');
+const tabButtons = Array.from(document.querySelectorAll(".form-tabs .tab"));
+const tabPanels = Array.from(document.querySelectorAll(".tab-panel"));
 
 let activeObjectUrl = null;
 
 const presets = {
-  mini: { width: 300, height: 420, dpr: 2, format: "png" },
-  standard: { width: 384, height: 576, dpr: 3, format: "png" },
-  wide: { width: 768, height: 1024, dpr: 2, format: "jpeg" },
+  mini: {
+    width: 300,
+    height: 420,
+    dpr: 2,
+    format: "png",
+    bgScale: 106,
+    bgOffsetX: 0,
+    bgOffsetY: 0,
+    mainScale: 92,
+    mainOffsetX: 0,
+    mainOffsetY: 0,
+  },
+  standard: {
+    width: 384,
+    height: 576,
+    dpr: 3,
+    format: "png",
+    bgScale: 106,
+    bgOffsetX: 0,
+    bgOffsetY: 0,
+    mainScale: 92,
+    mainOffsetX: 0,
+    mainOffsetY: 0,
+  },
+  wide: {
+    width: 768,
+    height: 1024,
+    dpr: 2,
+    format: "jpeg",
+    bgScale: 110,
+    bgOffsetX: 0,
+    bgOffsetY: -20,
+    mainScale: 88,
+    mainOffsetX: 0,
+    mainOffsetY: -12,
+  },
+};
+
+const presetLabels = {
+  mini: "Mini",
+  standard: "Classique",
+  wide: "Affiche",
 };
 
 const syncPairs = new Map();
+
+function syncValue(control, value) {
+  if (!control) {
+    return;
+  }
+  control.value = value;
+  const partner = syncPairs.get(control);
+  if (partner) {
+    partner.value = value;
+  }
+}
 
 document.querySelectorAll(".sync-number").forEach((numberInput) => {
   const key = numberInput.dataset.sync;
@@ -35,6 +87,31 @@ document.querySelectorAll(".sync-number").forEach((numberInput) => {
 syncPairs.forEach((target, input) => {
   input.addEventListener("input", () => {
     target.value = input.value;
+  });
+});
+
+function activateTab(target) {
+  tabButtons.forEach((button) => {
+    const isActive = button.dataset.tab === target;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-selected", isActive ? "true" : "false");
+  });
+
+  tabPanels.forEach((panel) => {
+    const isActive = panel.dataset.tab === target;
+    panel.classList.toggle("is-active", isActive);
+    panel.toggleAttribute("hidden", !isActive);
+    panel.setAttribute("tabindex", isActive ? "0" : "-1");
+  });
+}
+
+if (tabButtons.length) {
+  activateTab(tabButtons[0].dataset.tab);
+}
+
+tabButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    activateTab(button.dataset.tab);
   });
 });
 
@@ -62,7 +139,14 @@ function applyPreset(key) {
   form.height.value = preset.height;
   form.dpr.value = preset.dpr;
   form.format.value = preset.format;
-  statusMessage.textContent = `Applied ${key} preset. Update the preview to render with new dimensions.`;
+  syncValue(form.bgScale, String(preset.bgScale));
+  syncValue(form.bgOffsetX, String(preset.bgOffsetX));
+  syncValue(form.bgOffsetY, String(preset.bgOffsetY));
+  syncValue(form.mainScale, String(preset.mainScale));
+  syncValue(form.mainOffsetX, String(preset.mainOffsetX));
+  syncValue(form.mainOffsetY, String(preset.mainOffsetY));
+  const label = presetLabels[key] || key;
+  statusMessage.textContent = `Préréglage ${label} appliqué. Relancez l'aperçu pour visualiser le rendu.`;
 }
 
 function updateFileLabels() {
@@ -78,8 +162,12 @@ function updateFileLabels() {
 form.querySelectorAll('input[type="file"]').forEach((input) => {
   input.addEventListener("change", () => {
     updateFileLabels();
+    const card = input.closest(".upload-card");
+    if (card) {
+      card.classList.remove("has-error");
+    }
     if ([...form.querySelectorAll('input[type="file"]')].every((el) => el.files.length)) {
-      statusMessage.textContent = "Files ready. Adjust settings and render when ready.";
+      statusMessage.textContent = "Fichiers prêts. Ajustez les paramètres puis lancez le rendu.";
     }
   });
 
@@ -121,14 +209,53 @@ function revokeActiveUrl() {
   }
 }
 
+function validateBeforeRender() {
+  const requiredFileInputs = Array.from(form.querySelectorAll('input[type="file"][required]'));
+  const missingFiles = requiredFileInputs.filter((input) => !input.files.length);
+
+  requiredFileInputs.forEach((input) => {
+    const card = input.closest(".upload-card");
+    if (card) {
+      card.classList.toggle("has-error", missingFiles.includes(input));
+    }
+  });
+
+  if (missingFiles.length) {
+    statusMessage.textContent = "Ajoutez les images requises avant de lancer le rendu.";
+    return false;
+  }
+
+  if (typeof form.checkValidity === "function") {
+    const isValid = form.checkValidity();
+    if (!isValid) {
+      const firstInvalid = form.querySelector(":invalid");
+      if (firstInvalid) {
+        const targetPanel = firstInvalid.closest(".tab-panel");
+        if (targetPanel && !targetPanel.classList.contains("is-active")) {
+          activateTab(targetPanel.dataset.tab);
+        }
+        firstInvalid.focus?.({ preventScroll: true });
+      }
+      try {
+        form.reportValidity?.();
+      } catch (error) {
+        console.warn("Impossible d'afficher les erreurs de validation automatiquement.", error);
+      }
+      return false;
+    }
+  }
+
+  return true;
+}
+
 async function render(trigger = "preview") {
-  if (!form.reportValidity()) {
+  if (!validateBeforeRender()) {
     return;
   }
 
   statusMessage.textContent = trigger === "download"
-    ? "Rendering a fresh download-ready version…"
-    : "Rendering preview…";
+    ? "Génération d'un rendu optimisé pour le téléchargement."
+    : "Génération de l'aperçu.";
 
   const formData = new FormData(form);
 
@@ -153,13 +280,13 @@ async function render(trigger = "preview") {
 
     if (downloadLink) {
       downloadLink.href = activeObjectUrl;
-      downloadLink.download = `card.${extension}`;
+      downloadLink.download = `carte.${extension}`;
       downloadLink.setAttribute("aria-disabled", "false");
     }
 
     statusMessage.textContent = trigger === "download"
-      ? "Render complete. Download should begin shortly."
-      : "Preview updated successfully.";
+      ? "Rendu terminé. Le téléchargement va démarrer."
+      : "Aperçu mis à jour avec succès.";
 
     if (trigger === "download") {
       if (downloadLink) {
@@ -167,7 +294,7 @@ async function render(trigger = "preview") {
       } else {
         const tempLink = document.createElement("a");
         tempLink.href = activeObjectUrl;
-        tempLink.download = `card.${extension}`;
+        tempLink.download = `carte.${extension}`;
         document.body.appendChild(tempLink);
         tempLink.click();
         tempLink.remove();
@@ -175,7 +302,7 @@ async function render(trigger = "preview") {
     }
   } catch (error) {
     console.error(error);
-    statusMessage.textContent = `Render failed: ${error.message || error}`;
+    statusMessage.textContent = `Le rendu a échoué : ${error.message || error}`;
   } finally {
     setLoading(false);
   }
@@ -206,5 +333,8 @@ resultImage.addEventListener("load", () => {
 
 // Initialise UI state on load
 updateFileLabels();
-statusMessage.textContent = "Drop in your artwork files to get started.";
+statusMessage.textContent = "Déposez vos images pour commencer.";
 updateIconSelection();
+
+
+
